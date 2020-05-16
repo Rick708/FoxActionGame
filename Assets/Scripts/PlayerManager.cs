@@ -1,17 +1,18 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
     [SerializeField] LayerMask blockLayer;
+
     public enum DIRECTION_TYPE
     {
         STOP,
         LEFT,
         RIGHT,
     }
-
     DIRECTION_TYPE direction = DIRECTION_TYPE.STOP;
-
     float speed;
     Rigidbody2D rigidbody2D;
 
@@ -60,12 +61,12 @@ public class PlayerManager : MonoBehaviour
                 transform.localScale = new Vector3(-1, 1, 1);
                 break;
         }
-        GetComponent<Rigidbody2D>().velocity = new Vector2(speed, GetComponent<Rigidbody2D>().velocity.y);
+        rigidbody2D.velocity = new Vector2(speed, rigidbody2D.velocity.y);
     }
 
     void Jump()
     {
-        GetComponent<Rigidbody2D>().AddForce(Vector2.up * jumpPower);
+        rigidbody2D.AddForce(Vector2.up * jumpPower);
     }
 
     bool IsGround()
@@ -78,7 +79,6 @@ public class PlayerManager : MonoBehaviour
         Debug.DrawLine(leftStartPoint, endPoint);
         Debug.DrawLine(rightStartPoint, endPoint);
 
-        return Physics2D.Linecast(leftStartPoint, endPoint, blockLayer)
-            || Physics2D.Linecast(rightStartPoint, endPoint, blockLayer);
+        return Physics2D.Linecast(leftStartPoint, endPoint, blockLayer) || Physics2D.Linecast(rightStartPoint, endPoint, blockLayer);
     }
 }
